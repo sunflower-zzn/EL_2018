@@ -1,18 +1,16 @@
 #_*_coding:utf8_*_
-import requests
+import datetime
+import re
 import sys
 import time
-import codecs
-import re
-import datetime
+
+import requests
 from bs4 import BeautifulSoup
 
 from logger import Logger
-from mongodb import Mongo,Mongo_1,Mongo_2
+from mongodb import Mongo, Mongo_1
 from proxy_pool import get_IP
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class CommentersTopics:
 

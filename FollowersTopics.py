@@ -1,18 +1,16 @@
 #_*_coding:utf8_*_
-import requests
+import datetime
+import re
 import sys
 import time
-import codecs
-import re
-import datetime
+
+import requests
 from bs4 import BeautifulSoup
 
 from logger import Logger
-from mongodb import Mongo,Mongo_1,Mongo_2
+from mongodb import Mongo, Mongo_1
 from proxy_pool import get_IP
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class FollowersTopics:
 
@@ -118,7 +116,7 @@ class FollowersTopics:
                         self.delLogger(logger)
                         return
 
-                except Exception, e:
+                except Exception as e:
                     logger.error('查看回答数出错！' + str(e))
                     self.current_proxy = get_IP()
                     logger.warning('切换ip代理!中断3秒！')
@@ -140,7 +138,7 @@ class FollowersTopics:
                                 soup = requests.get(topics_url.format(str(offset)), headers=self.headers, timeout=5, proxies=self.current_proxy)
                                 time.sleep(3)
                                 logger.info('请求状态码' + str(soup.status_code))
-                            except Exception, e:
+                            except Exception as e:
                                 logger.error('请求关注话题出错！' + str(e))
                                 self.current_proxy = get_IP()
                                 logger.warning('切换ip代理!中断3秒！')
@@ -229,8 +227,7 @@ class FollowersTopics:
         self.file = open('CreatePoint/followers_topics_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的Cookie编号、起始点和终止点：'
-            Input = raw_input()
+            Input = input('请输入爬取的Cookie编号、起始点和终止点：')
             self.type = Input.split(',')[0]
             self.start = int(Input.split(',')[1])
             self.end = int(Input.split(',')[2].strip('\n'))

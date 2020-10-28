@@ -1,19 +1,17 @@
 #-*- coding:utf-8 –*-
 
-import requests
+import datetime
+import re
 import sys
 import time
-import re
-import datetime
+
+import requests
 from bs4 import BeautifulSoup
 
 from logger import Logger
-from mongodb import Mongo,Mongo_1,Mongo_2
+from mongodb import Mongo, Mongo_1
 from proxy_pool import get_IP
-from extractor import extract_voters_info
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class VotersInfo:
 
@@ -142,7 +140,7 @@ class VotersInfo:
                 # 用户的关注者数
                 follower_count = soup.findAll('a', class_='Button NumberBoard-item Button--plain')[1].find('strong',
                                                                                                         class_='NumberBoard-itemValue').get_text()
-            except Exception, e:
+            except Exception as e:
                 logger.error('信息find失败！' + str(e))
                 data_plus = {"user_id": self.user_id}
             else:
@@ -203,8 +201,7 @@ class VotersInfo:
         self.file = open('CreatePoint/voters_info_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的Cookie编号、起始点和终止点：'
-            Input = raw_input()
+            Input = input('请输入爬取的Cookie编号、起始点和终止点：')
             self.type = Input.split(',')[0]
             self.start = int(Input.split(',')[1])
             self.end = int(Input.split(',')[2].strip('\n'))

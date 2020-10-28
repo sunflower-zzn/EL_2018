@@ -1,17 +1,16 @@
 # -*- coding:utf-8 –*-
 
 import datetime
+import re
+import sys
 import time
 
-import sys
 from bs4 import BeautifulSoup
-import re
-import json
-
 from selenium import webdriver
-from mongodb import Mongo,Mongo_1
-from user_filter import Extractor
+
 from logger import Logger
+from mongodb import Mongo_1
+
 
 class UserDetail:
 
@@ -47,7 +46,7 @@ class UserDetail:
             detail["gender"] = sex
             try:
                 driver.find_element_by_xpath("//button[@class='Button ProfileHeader-expandButton Button--plain']").click()
-            except Exception, e:
+            except Exception as e:
                 logger.error('无其他详细资料！')
             else:
                 content = driver.page_source
@@ -91,7 +90,7 @@ if __name__ == '__main__':
     driver = webdriver.PhantomJS(executable_path=r'D:\PhantomJS\phantomjs-2.1.1-windows\bin\phantomjs.exe')
 
     dt = re.sub(r'[^0-9]', '', str(datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')))
-    for i in xrange(2367, 4735):
+    for i in range(2367, 4735):
 
         ud.get_people_detail(userID_list[i], i , dt)
         #time.sleep(1)

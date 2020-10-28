@@ -1,23 +1,20 @@
 #-*- coding:utf-8 –*-
 
-import os
-import requests
-import sys
-from bs4 import BeautifulSoup
-import time
-import re
-import random
 import datetime
+import random
+import re
+import sys
+import time
 
+import requests
+from bs4 import BeautifulSoup
 
-from mongodb import Mongo,Mongo_1,Mongo_2
-from proxy_pool import get_IP
-from logger import Logger
 from extractor import extract_questionUrl
 from extractor import extract_question_followers
+from logger import Logger
+from mongodb import Mongo_1
+from proxy_pool import get_IP
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class QuestionFollowers:
 
@@ -146,7 +143,7 @@ class QuestionFollowers:
                                 f1.write(str(i + 1) + '\n')
                     else:
                         return
-                except Exception, e:
+                except Exception as e:
                     logger.error('获取关注者数出错！' + str(e))
                     self.current_proxy = get_IP()
                     logger.warning('切换ip代理!中断3秒！')
@@ -167,7 +164,7 @@ class QuestionFollowers:
                                 soup = requests.get(followers_url.format(str(offset)), headers=self.headers, timeout=5, proxies=self.current_proxy)
                                 time.sleep(3)
                                 logger.info('请求状态码' + str(soup.status_code))
-                            except Exception, e:
+                            except Exception as e:
                                 logger.error('请求关注者出错！' + str(e))
                                 self.current_proxy = get_IP()
                                 logger.warning('切换ip代理!中断3秒！')
@@ -268,8 +265,7 @@ class QuestionFollowers:
         self.file = open('CreatePoint/question_followers_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的Cookie编号、起始点和终止点：'
-            Input = raw_input()
+            Input = raw_input('请输入爬取的Cookie编号、起始点和终止点：')
             self.type = Input.split(',')[0]
             self.start = int(Input.split(',')[1])
             self.end = int(Input.split(',')[2].strip('\n'))

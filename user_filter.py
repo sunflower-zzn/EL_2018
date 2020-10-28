@@ -1,10 +1,8 @@
 #-*- coding:utf-8 –*-
 
 import datetime
-import time
 
-from mongodb import Mongo,Mongo_1,Mongo_2
-
+from mongodb import Mongo_1
 
 
 class Extractor:
@@ -17,17 +15,17 @@ class Extractor:
     # 从问题日志提取问题编辑者
     def extractFromLog(self):
 
-        print '开始提取问题编辑者...'
+        print('开始提取问题编辑者...')
         count = 1
         temp_list = []
 
         items = self.mongo.db.question_log.find({}, {"log": 1})
 
         for item in items:
-            print '第%d个问题'% count
+            print('第%d个问题' % count)
             count = count + 1
             log = item.get('log')
-            for i in xrange(0, len(log)):
+            for i in range(0, len(log)):
                 temp = log[i].get('question_editor')
                 if temp == None or temp == '':
                     continue
@@ -36,33 +34,33 @@ class Extractor:
                     temp_list.append(url_token)
 
         if temp_list == []:
-            print '提取错误...'
+            print('提取错误...')
         else:
-            print len(temp_list)
+            print(len(temp_list))
             #去重
             temp_list = list(set(temp_list))
-            print len(temp_list)
+            print(len(temp_list))
             for user in temp_list:
                 self.user_list.append({'user_id': user})
 
         #self.mongo.insertToUsersByFilter(self.user_list)
         self.mongo.db.editors.insert_many(self.user_list)
 
-        print '提取问题编辑者完毕...'
+        print('提取问题编辑者完毕...')
 
     # 从回答中提取回答者
     def extractFromAnswer(self):
 
-        print '开始提取回答者...'
+        print('开始提取回答者...')
         count = 1
         temp_list = []
 
         items = self.mongo.db.question_answers.find({})
         for item in items:
-            print '第%d个'% count
+            print('第%d个' % count)
             count = count + 1
             if item.get('answer_num') == 0:
-                print item.get('answer_num')
+                print(item.get('answer_num'))
                 continue
             else:
                 answers = item.get('answers')
@@ -74,33 +72,32 @@ class Extractor:
                         temp_list.append(temp)
 
         if temp_list == []:
-            print '提取错误...'
+            print('提取错误...')
         else:
-            print len(temp_list)
+            print(len(temp_list))
             temp_list = list(set(temp_list))
-            print len(temp_list)
+            print(len(temp_list))
             for user in temp_list:
                 self.user_list.append({'user_id': user})
 
         #self.mongo.insertToUsersByFilter(self.user_list)
         self.mongo.db.answerers.insert_many(self.user_list)
 
-        print '提取回答者完毕...'
-
+        print('提取回答者完毕...')
 
     # 提取问题关注者
     def extractQuestionFollowers(self):
 
-        print '开始提取问题关注者...'
+        print('开始提取问题关注者...')
         count = 1
         temp_list = []
 
         items = self.mongo.db.question_followers.find({}, {"follower_num": 1, "followers": 1 })
         for item in items:
-            print '第%d个' % count
+            print('第%d个' % count)
             count = count + 1
             if item.get('follower_num') == 0:
-                print item.get('follower_num')
+                print(item.get('follower_num'))
                 continue
             else:
                 self.user_list = []
@@ -114,36 +111,36 @@ class Extractor:
 
 
         if temp_list == []:
-            print '提取错误...'
+            print('提取错误...')
         else:
-            print len(temp_list)
+            print(len(temp_list))
             temp_list = list(set(temp_list))
-            print len(temp_list)
+            print(len(temp_list))
             for user in temp_list:
                 self.user_list.append({'user_id': user})
 
         #self.mongo.insertToUsersByFilter(self.user_list)
         self.mongo.db.followers.insert_many(self.user_list)
 
-        print '提取问题关注者完毕...'
+        print('提取问题关注者完毕...')
 
     # 提取点赞者
     def extractVoters(self):
 
-        print '开始提取回答点赞者...'
+        print('开始提取回答点赞者...')
         count = 1
         temp_list = []
 
         items = self.mongo.db.answer_voters.find({}, {'voter_num': 1, 'voters': 1})
         for item in items:
-            print '第%d个回答' % count
+            print('第%d个回答' % count)
             count += 1
             if item.get('voter_num') == 0:
-                print item.get('voter_num')
+                print(item.get('voter_num'))
                 continue
             else:
                 voters = item.get('voters')
-                for i in xrange(0, len(voters)):
+                for i in range(0, len(voters)):
                     temp = voters[i].get('voter_id')
                     if temp == None or temp == '':
                         continue
@@ -151,36 +148,36 @@ class Extractor:
                         temp_list.append(temp)
 
         if temp_list == []:
-            print '提取错误...'
+            print('提取错误...')
         else:
-            print len(temp_list)
+            print(len(temp_list))
             temp_list = list(set(temp_list))
-            print len(temp_list)
+            print(len(temp_list))
             for user in temp_list:
                 self.user_list.append({'user_id': user})
 
         #self.mongo.insertToUsersByFilter(self.user_list)
         self.mongo.db.voters.insert_many(self.user_list)
 
-        print '提取回答点赞者完毕...'
+        print('提取回答点赞者完毕...')
 
     # 提取评论者
     def extractCommenters(self):
 
-        print '开始提取评论者...'
+        print('开始提取评论者...')
         count = 1
         temp_list = []
 
         items = self.mongo.db.answer_comments.find({}, {'comment_num': 1, 'comments': 1})
         for item in items:
-            print '第%d个评论...' % count
+            print('第%d个评论...' % count)
             count += 1
             if item.get('comment_num') == 0:
-                print item.get('comment_num')
+                print(item.get('comment_num'))
                 continue
             else:
                 comments = item.get('comments')
-                for i in xrange(0, len(comments)):
+                for i in range(0, len(comments)):
                     temp = comments[i].get('commenter_id')
                     if temp == None or temp == '':
                         continue
@@ -188,18 +185,18 @@ class Extractor:
                         temp_list.append(temp)
 
         if temp_list == []:
-            print '提取错误...'
+            print('提取错误...')
         else:
-            print len(temp_list)
+            print(len(temp_list))
             temp_list = list(set(temp_list))
-            print len(temp_list)
+            print(len(temp_list))
             for user in temp_list:
                 self.user_list.append({'user_id': user})
 
         #self.mongo.insertToUsersByFilter(self.user_list)
         self.mongo.db.commenters.insert_many(self.user_list)
 
-        print '提取评论者完毕...'
+        print('提取评论者完毕...')
 
         #评论者数：28472
 
@@ -231,20 +228,20 @@ if __name__ == "__main__":
     #创建对象
     extr = Extractor()
     #从问题日志提取问题编辑者
-    # extr.extractFromLog()#21409用时：0:00:05.147000
+    extr.extractFromLog()#21409用时：0:00:05.147000
     #从回答中提取回答者(在开始之前先导入旧的回答)
-    # extr.extractFromAnswer()#36719用时：0:00:10.768000_第11740个
+    extr.extractFromAnswer()#36719用时：0:00:10.768000_第11740个
     #提取问题关注者
-    # extr.extractQuestionFollowers()
+    extr.extractQuestionFollowers()
 
     #（等3跑完）提取点赞者
-    #extr.extractVoters()
+    extr.extractVoters()
     #（等3跑完）提取评论者
     extr.extractCommenters()
 
     #把所有“者”放在一个集合中
-    #extr.getAllUsers()
+    extr.getAllUsers()
 
     end = datetime.datetime.now()
 
-    print '用时：' + str(end - begin)
+    print('用时：' + str(end - begin))

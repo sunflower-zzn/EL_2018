@@ -1,22 +1,19 @@
 #-*- coding:utf-8 –*-
 
-import os
-import requests
-import sys
-from bs4 import BeautifulSoup
-import time
-import re
-import random
 import datetime
+import random
+import re
+import sys
+import time
 
+import requests
+from bs4 import BeautifulSoup
 
-from mongodb import Mongo,Mongo_1,Mongo_2
-from proxy_pool import get_IP
-from logger import Logger
 from extractor import extract_questionUrl
+from logger import Logger
+from mongodb import Mongo_1
+from proxy_pool import get_IP
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class QuestionLog:
 
@@ -176,8 +173,7 @@ class QuestionLog:
         self.file = open('CreatePoint/question_log_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的Cookie编号、起始点和终止点：'
-            Input = raw_input()
+            Input = input('请输入爬取的Cookie编号、起始点和终止点：')
             self.type = Input.split(',')[0]
             self.start = int(Input.split(',')[1])
             self.end = int(Input.split(',')[2].strip('\n'))

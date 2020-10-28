@@ -1,18 +1,16 @@
 # _*_ coding:utf-8 _*_
-import requests
+import datetime
+import re
 import sys
 import time
-import re
-import datetime
+
+import requests
 from bs4 import BeautifulSoup
 
 from logger import Logger
-from mongodb import Mongo,Mongo_1,Mongo_2
+from mongodb import Mongo, Mongo_1
 from proxy_pool import get_IP
-from extractor import extract_editors_following, extract_last_editors
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class EditorsFollowing:
 

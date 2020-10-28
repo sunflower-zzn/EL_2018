@@ -4,7 +4,6 @@ from pymongo import MongoClient
 
 
 # 可以通过ObjectId方法把str转成ObjectId类型
-from bson.objectid import ObjectId
 '''
 print "_id 转换成ObjectId类型"
 print coll.find_one({"_id": ObjectId(str(obj_id))})'''
@@ -12,19 +11,19 @@ print coll.find_one({"_id": ObjectId(str(obj_id))})'''
 class MG:
     def __init__(self):
         #建立连接
-        uri = 'mongodb://dev:Chenshi2017@58.206.96.135:20250'
+        uri = 'mongodb://127.0.0.1:27017/'
         self.client = MongoClient(uri)
         self.db = self.client.zhihu
 
 class Mongo_1:
     def __init__(self):
-        uri = 'mongodb://dev:Chenshi2017@58.206.96.135:20250'
+        uri = 'mongodb://127.0.0.1:27017/'
         self.client = MongoClient(uri)
         self.db = self.client.EL
 
 class Mongo_2:
     def __init__(self):
-        uri = 'mongodb://dev:Chenshi2017@58.206.96.135:20250'
+        uri = 'mongodb://127.0.0.1:27017/'
         self.client = MongoClient(uri)
         self.db = self.client.PM
 
@@ -33,7 +32,7 @@ class Mongo:
 
     def __init__(self):
         #建立连接
-        uri = 'mongodb://dev:ChenShi2017@58.206.96.135:20250'
+        uri = 'mongodb://127.0.0.1:27017/'
         self.client = MongoClient(uri)
         self.db = self.client.EnglishLearning20171109
 

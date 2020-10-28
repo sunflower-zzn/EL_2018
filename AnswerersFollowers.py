@@ -1,18 +1,16 @@
 # _*_ coding:utf-8 _*_
-import requests
+import datetime
+import re
 import sys
 import time
-import re
-import datetime
+
+import requests
 from bs4 import BeautifulSoup
 
 from logger import Logger
-from mongodb import Mongo,Mongo_1,Mongo_2
+from mongodb import Mongo_1
 from proxy_pool import get_IP
-from extractor import extract_answerers_followers, extract_last_answerers
 
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class AnswerersFollowers:
 
@@ -82,7 +80,7 @@ class AnswerersFollowers:
         self.get_cookie()
         # self.user_id_list = extract_last_answerers()
         dt = re.sub(r'[^0-9]', '', str(datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')))
-        for i in xrange(self.start, self.end):
+        for i in range(self.start, self.end):
             self.state = False
             self.user_id = self.userID_list[i]
             self.file.seek(0,2)
@@ -129,7 +127,7 @@ class AnswerersFollowers:
                         self.delLogger(logger)
                         return
 
-                except Exception, e:
+                except Exception as e:
                     logger.error('查看回答数出错！' + str(e))
                     self.current_proxy = get_IP()
                     logger.warning('切换ip代理!中断3秒！')
@@ -157,7 +155,7 @@ class AnswerersFollowers:
                                 soup = requests.get(follower_url.format(str(offset)), headers=self.headers, timeout=5, proxies=self.current_proxy)
                                 time.sleep(3)
                                 logger.info('请求状态码' + str(soup.status_code))
-                            except Exception, e:
+                            except Exception as e:
                                 logger.error('请求关注者出错！' + str(e))
                                 self.current_proxy = get_IP()
                                 logger.warning('切换ip代理!中断3秒！')
@@ -257,8 +255,7 @@ class AnswerersFollowers:
         self.file = open('CreatePoint/answerers_followers_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的Cookie编号、起始点和终止点：'
-            Input = raw_input()
+            Input = input('请输入爬取的Cookie编号、起始点和终止点：')
             self.type = Input.split(',')[0]
             self.start = int(Input.split(',')[1])
             self.end = int(Input.split(',')[2].strip('\n'))

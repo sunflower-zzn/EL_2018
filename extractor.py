@@ -1,9 +1,7 @@
 #-*- coding:utf-8 –*-
 
-from mongodb import Mongo,Mongo_1,Mongo_2
-import json
-import datetime
-import re
+from mongodb import Mongo_1
+
 
 # 提取问题种子----（返回问题URL列表）
 def extract_questionUrl():

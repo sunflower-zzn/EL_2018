@@ -1,17 +1,16 @@
 # -*- coding:utf-8 –*-
 
 import datetime
+import re
+import sys
 import time
 
-import sys
 from bs4 import BeautifulSoup
-import re
-import json
-
 from selenium import webdriver
-from mongodb import Mongo,Mongo_1
-from user_filter import Extractor
+
 from logger import Logger
+from mongodb import Mongo_1
+
 
 class UserDetail:
 
@@ -35,7 +34,7 @@ class UserDetail:
         for item in items:
             self.userID_list.append(item.get('user_id'))
         dt = re.sub(r'[^0-9]', '', str(datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')))
-        for i in xrange(self.start, self.end):
+        for i in range(self.start, self.end):
             self.id = self.userID_list[i]
             self.file.seek(0,2)
             dt1 = re.sub(r'[^0-9]', '', str(datetime.datetime.now().strftime('%Y-%m-%d')))
@@ -59,7 +58,7 @@ class UserDetail:
                 detail["gender"] = sex
                 try:
                     self.driver.find_element_by_xpath("//button[@class='Button ProfileHeader-expandButton Button--plain']").click()
-                except Exception, e:
+                except Exception as e:
                     logger.error('无其他详细资料！')
                 else:
                     content = self.driver.page_source
@@ -89,8 +88,7 @@ class UserDetail:
         self.file = open('CreatePoint/voters_userdetail_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的编号,起始点和终止点：'
-            Input = raw_input()
+            Input = input('请输入爬取的编号,起始点和终止点：')
             self.type = Input.split(',')[0]
             self.start = int(Input.split(',')[1])
             self.end = int(Input.split(',')[2].strip('\n'))

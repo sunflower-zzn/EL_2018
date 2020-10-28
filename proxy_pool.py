@@ -11,9 +11,9 @@ def get_IP():
         py = proxy.get('proxy')
         mongo.db.proxies.remove({'proxy': py})
     except Exception as e:
-        print '请求IP代理出错：' + str(e)
+        print('请求IP代理出错：' + str(e))
     else:
-        print '已获取新IP代理'
+        print('已获取新IP代理')
 
     return py
 
@@ -26,11 +26,11 @@ def get_IPs(num=10):
         proxies = mongo.db.proxies.find({}, {'proxy': 1, '_id': 0})
         for proxy in proxies:
             ip_list.append(proxy.get('proxy'))
-        for i in xrange(num):
+        for i in range(num):
             mongo.db.proxies.remove({'proxy': ip_list[i]})
     except Exception as e:
-        print '请求IP代理出错：' + e
+        print('请求IP代理出错：' + e)
     else:
-        print '已获取新IP代理'
+        print('已获取新IP代理')
 
     return ip_list[0:num]

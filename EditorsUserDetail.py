@@ -1,17 +1,16 @@
 # -*- coding:utf-8 –*-
 
 import datetime
+import re
+import sys
 import time
 
-import sys
 from bs4 import BeautifulSoup
-import re
-import json
-
 from selenium import webdriver
-from mongodb import Mongo,Mongo_1
-from user_filter import Extractor
+
 from logger import Logger
+from mongodb import Mongo_1
+
 
 class UserDetail:
 
@@ -58,7 +57,7 @@ class UserDetail:
                 detail["gender"] = sex
                 try:
                     self.driver.find_element_by_xpath("//button[@class='Button ProfileHeader-expandButton Button--plain']").click()
-                except Exception, e:
+                except Exception as e:
                     logger.error('无其他详细资料！')
                 else:
                     content = self.driver.page_source
@@ -88,8 +87,7 @@ class UserDetail:
         self.file = open('CreatePoint/editors_userdetail_createpoint_' + str(self.fileNum) + '.txt','a+')
         Lines = self.file.readlines()
         if len(Lines) == 0:
-            print '请输入爬取的起始点和终止点：'
-            Input = raw_input()
+            Input = input('请输入爬取的起始点和终止点：')
             self.start = int(Input.split(',')[0])
             self.end = int(Input.split(',')[1].strip('\n'))
             self.file.write(Input + '\n')
